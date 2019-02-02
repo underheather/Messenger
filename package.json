@@ -4,11 +4,10 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "test": "npm run tslint && npm run tsc-test && npm run jest",
+    "test": "yarn run tslint && yarn run tsc-test && yarn run jest",
     "tslint": "tslint --project .",
-    "tsc-test": "tsc --project . --noEmit",
-    "jest": "jest",
-    "eject": "expo eject"
+    "tsc-test": "tsc --project .",
+    "jest": "jest"
   },
   "dependencies": {
     "expo": "^32.0.0",
