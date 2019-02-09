@@ -7,7 +7,9 @@
     "test": "yarn run tslint && yarn run tsc-test && yarn run jest",
     "tslint": "tslint --project .",
     "tsc-test": "tsc --project .",
-    "jest": "jest"
+    "jest": "jest",
+    "publish": "expo publish",
+    "build": "expo build:android"
   },
   "dependencies": {
     "expo": "^32.0.0",
