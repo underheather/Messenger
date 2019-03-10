@@ -1,8 +1,9 @@
 import * as React from "react";
-import { StyleSheet, TextInput, View } from "react-native";
+import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 
 interface IState {
   input: string;
+  chatHistory: ReadonlyArray<string>;
 }
 
 export default class App extends React.Component<{}, IState> {
@@ -11,21 +12,29 @@ export default class App extends React.Component<{}, IState> {
 
     this.state = {
       input: "",
+      chatHistory: [],
     };
   }
 
   render() {
     return (
       <View style={styles.container}>
+        <Text>{JSON.stringify(this.state.chatHistory)}</Text>
         <TextInput
           value={this.state.input}
           style={styles.input}
           placeholder="Write something here"
           onChangeText={this.handleTextbox}
         />
+        <Button onPress={this.onSubmit} title="Send" />
       </View>
     );
   }
+
+  onSubmit = () => {
+    const chatHistory = this.state.chatHistory.concat(this.state.input);
+    this.setState({ chatHistory, input: "" });
+  };
 
   handleTextbox = (input: string) => {
     this.setState({ input });
