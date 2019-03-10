@@ -1,17 +1,24 @@
 import * as React from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { StyleSheet, TextInput, View } from "react-native";
 
-export default class App extends React.Component {
-  state = {
-    textbox: " ",
-  };
-  handleTextbox = () => {
-    this.setState({ Textbox: Text });
-  };
+interface IState {
+  input: string;
+}
+
+export default class App extends React.Component<{}, IState> {
+  constructor(props: {}) {
+    super(props);
+
+    this.state = {
+      input: "",
+    };
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <TextInput
+          value={this.state.input}
           style={styles.input}
           placeholder="Write something here"
           onChangeText={this.handleTextbox}
@@ -19,6 +26,10 @@ export default class App extends React.Component {
       </View>
     );
   }
+
+  handleTextbox = (input: string) => {
+    this.setState({ input });
+  };
 }
 
 const styles = StyleSheet.create({
