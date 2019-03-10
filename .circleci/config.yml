@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  publish:
+  test:
     working_directory: ~/messenger
     docker:
       - image: circleci/node:8.9.1
@@ -33,6 +33,34 @@ jobs:
           root: ~/messenger
           paths: .
 
+  publish:
+    working_directory: ~/messenger
+    docker:
+      - image: circleci/node:8.9.1
+    steps:
+      - checkout
+      # Restore npm cache
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ checksum "yarn.lock" }}
+
+      # Install dependencies
+      - run:
+          name: Install dependencies
+          command: yarn install --frozen-lockfile
+
+      # Persist npm cache
+      - save_cache:
+          name: Save yarn package cache
+          key: yarn-packages-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+
+      - persist_to_workspace:
+          root: ~/messenger
+          paths: .
+
       # Install expo-cli and publish an OTA update
       - run:
           name: Install Expo CLI
@@ -43,8 +71,21 @@ jobs:
       - run:
           name: Publish OTA Update
           command: yarn run publish
+
 workflows:
   version: 2
+  test_pull_requests:
+    jobs:
+      - test:
+          filters:
+            branches:
+              ignore: master
   test_and_publish_update:
     jobs:
-      - publish
+      - test:
+          filters:
+            branches:
+              only: master
+      - publish:
+          requires:
+            - test
